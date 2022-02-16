@@ -28,16 +28,16 @@ def mail_notification(body):
 
     for d in body:
         constainer_status = []
+        logs = [subprocess.getoutput(
+            f'docker logs --tail 100 {d["container_name"]}')]
 
         if (d != {} and d['statusCode'] != 200):
             constainer_status.append(subprocess.getoutput(
                 'docker inspect -f "{0}" {1}'.format("{{ .State.Status }}", d["container_name"])))
-            logs = [subprocess.getoutput(
-                f'docker logs --tail 100 {d["container_name"]}')]
             with open("logs.txt", "a") as f:
                 f.writelines(logs)
 
-            # os.system(f'docker restart {d["container_name"]}')
+            os.system(f'docker restart {d["container_name"]}')
             newData = {
                 "Container Name": d["container_name"],
                 "Service Name":  d["service_name"],
@@ -46,14 +46,6 @@ def mail_notification(body):
                 "Message": f'Container {d["container_name"]} restarted successfully!',
             }
             message.append(newData)
-            with open("logs.txt", "rb") as fil:
-                part = MIMEApplication(
-                    fil.read(),
-                    Name="logs.txt"
-                )
-            # After the file is closed
-            part['Content-Disposition'] = 'attachment; filename="logs.txt"'
-            msgData.attach(part)
 
         else:
             constainer_status.append(subprocess.getoutput(
@@ -71,7 +63,14 @@ def mail_notification(body):
     try:
 
         msgData.attach(MIMEText(bodyData, 'plain'))
-
+        with open("logs.txt", "rb") as fil:
+            part = MIMEApplication(
+                fil.read(),
+                Name="logs.txt"
+            )
+        # After the file is closed
+        part['Content-Disposition'] = 'attachment; filename="logs.txt"'
+        msgData.attach(part)
         text = msgData.as_string()
         print('Mail trigger started...')
         with SMTP(SMTP_HOST, SMTP_PORT) as smtpObj:

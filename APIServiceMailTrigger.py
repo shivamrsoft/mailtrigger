@@ -22,14 +22,12 @@ def dockerComposeServiceHealthCheckFn():
                 datanew = urlresponse.json()
                 servicedata['message'] = datanew['message']
                 servicedata['statusCode'] = datanew['statusCode']
-                print(datanew)
                 body.append(servicedata)
             except:
-                print('1')
                 servicedata['message'] = 'Container is down'
                 servicedata['statusCode'] = 500
                 body.append(servicedata)
-        # mail_notification(body)
+        mail_notification(body)
 
 
 if __name__ == '__main__':
