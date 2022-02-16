@@ -1,0 +1,86 @@
+{
+    "apigatewayservice": {
+        "service_name": "api gateway",
+        "container_name": "bmsapi-prateek2710_bmsapigateway_1",
+        "url": "http://192.168.2.107:8000/health/apigateway",
+        "message": ""
+    },
+    "accountsservice": {
+        "service_name": "accounts",
+        "container_name": "bmsapi-prateek2710_bmsaccountsservice_1",
+        "url": "http://192.168.2.107:8011/health/accountsservice",
+        "message": ""
+    },
+    "bulkimportservice": {
+        "service_name": "bulk import",
+        "container_name": "bmsapi-prateek2710_bmsbulkimportservice_1",
+        "url": "http://192.168.2.107:8015/health/bulkimport",
+        "message": ""
+    },
+    "companyservice": {
+        "service_name": "company",
+        "container_name": "bmsapi-prateek2710_bmscompanyservice_1",
+        "url": "http://192.168.2.107:8007/health/companyservice",
+        "message": ""
+    },
+    "generalservice": {
+        "service_name": "general",
+        "container_name": "bmsapi-prateek2710_bmsgeneralservice_1",
+        "url": "http://192.168.2.107:8005/health/generalservice",
+        "message": ""
+    },
+    "inventoryservice": {
+        "service_name": "inventory",
+        "container_name": "bmsapi-prateek2710_bmsinventoryservice_1",
+        "url": "http://192.168.2.107:8004/health/inventoryservice",
+        "message": ""
+    },
+    "ispservice": {
+        "service_name": "isp",
+        "container_name": "bmsapi-prateek2710_bmsispservice_1",
+        "url": "http://192.168.2.107:8002/health/ispservice",
+        "message": ""
+    },
+    "locationservice": {
+        "service_name": "location",
+        "container_name": "bmsapi-prateek2710_bmslocatonservice_1",
+        "url": "http://192.168.2.107:8003/health/locationservice",
+        "message": ""
+    },
+    "planservice": {
+        "service_name": "plan",
+        "container_name": "bmsapi-prateek2710_bmsplanservice_1",
+        "url": "http://192.168.2.107:8006/health/planservice",
+        "message": ""
+    },
+    "productservice": {
+        "service_name": "product",
+        "container_name": "bmsapi-prateek2710_bmsproductservice_1",
+        "url": "http://192.168.2.107:8008/health/productservice",
+        "message": ""
+    },
+    "purchaseservice": {
+        "service_name": "purchase",
+        "container_name": "bmsapi-prateek2710_bmspurchaseservice_1",
+        "url": "http://192.168.2.107:8009/health/purchaseservice",
+        "message": ""
+    },
+    "radiusservice": {
+        "service_name": "radius",
+        "container_name": "bmsapi-prateek2710_bmsradiusservice_1",
+        "url": "http://192.168.2.107:8012/health/radiusservice",
+        "message": ""
+    },
+    "subscriberservice": {
+        "service_name": "subscriber",
+        "container_name": "bmsapi-prateek2710_bmssubscriberservice_1",
+        "url": "http://192.168.2.107:8013/health/subscriberservice",
+        "message": ""
+    },
+    "userservice": {
+        "service_name": "user",
+        "container_name": "bmsapi-prateek2710_bmsuserservice_1",
+        "url": "http://192.168.2.107:8001/health/userservice",
+        "message": ""
+    }
+}
