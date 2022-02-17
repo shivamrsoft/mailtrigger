@@ -19,13 +19,18 @@ def mail_notification(body):
     SMTP_SENDER = config['mailconfig']['SMTP_SENDER']
     SMTP_PASSWORD = config['mailconfig']['SMTP_PASSWORD']
     SMTP_RECEIVERS = config['mailconfig']['SMTP_RECEIVERS']
+    SMTP_CC_RECEIVERS = config['mailconfig']['SMTP_CC_RECEIVERS']
     SMTP_HOST = config['mailconfig']['SMTP_HOST']
     SUBJECT = "Health Check for BMS Project"
+    BODY = ""
+
     message = []
+
     # Setup the MIME
     msgData = MIMEMultipart()
     msgData['From'] = SMTP_SENDER
     msgData['To'] = SMTP_RECEIVERS
+    msgData['Cc'] = SMTP_CC_RECEIVERS
     msgData['Subject'] = SUBJECT  # The subject line
 
     for d in body:
@@ -82,7 +87,11 @@ def mail_notification(body):
             part['Content-Disposition'] = 'attachment; filename="apistatus.xlsx"'
 
         msgData.attach(part)
-
+        BODY = """
+        1. File logs.txt is for the current logs of all the containers.
+        2. File apistatus.xlsx is for the current status of all the containers.
+        """
+        msgData.attach(MIMEText(BODY))
         text = msgData.as_string()
         print('Mail trigger started...')
         with SMTP(SMTP_HOST, SMTP_PORT) as smtpObj:
