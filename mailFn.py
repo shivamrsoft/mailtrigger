@@ -1,11 +1,13 @@
 from email.mime.application import MIMEApplication
 import subprocess
-from tabulate import tabulate
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from smtplib import SMTP, SMTPException
 import os
 from configparser import ConfigParser
+from convertToExcel import CreateExcel
+from email.mime.base import MIMEBase
+from email import encoders
 
 # mail trigger and configuration function
 
@@ -37,7 +39,7 @@ def mail_notification(body):
             with open("logs.txt", "a") as f:
                 f.writelines(logs)
 
-            os.system(f'docker restart {d["container_name"]}')
+            # os.system(f'docker restart {d["container_name"]}')
             newData = {
                 "Container Name": d["container_name"],
                 "Service Name":  d["service_name"],
@@ -48,6 +50,8 @@ def mail_notification(body):
             message.append(newData)
 
         else:
+            with open("logs.txt", "a") as f:
+                f.writelines(logs)
             constainer_status.append(subprocess.getoutput(
                 'docker inspect -f "{0}" {1}'.format("{{ .State.Status }}", d["container_name"])))
             newData = {
@@ -58,19 +62,27 @@ def mail_notification(body):
                 "Message": d['message']
             }
             message.append(newData)
-    bodyData = tabulate(message, headers="keys", showindex="always")
 
+        CreateExcel(message)
     try:
 
-        msgData.attach(MIMEText(bodyData, 'plain'))
         with open("logs.txt", "rb") as fil:
             part = MIMEApplication(
                 fil.read(),
                 Name="logs.txt"
             )
-        # After the file is closed
-        part['Content-Disposition'] = 'attachment; filename="logs.txt"'
+            part['Content-Disposition'] = 'attachment; filename="logs.txt"'
         msgData.attach(part)
+
+        with open("apistatus.xlsx", "rb") as excel:
+            part = MIMEBase('application', "octet-stream")
+            part.set_payload(excel.read())
+            encoders.encode_base64(part)
+        # After the file is closed
+            part['Content-Disposition'] = 'attachment; filename="apistatus.xlsx"'
+
+        msgData.attach(part)
+
         text = msgData.as_string()
         print('Mail trigger started...')
         with SMTP(SMTP_HOST, SMTP_PORT) as smtpObj:
@@ -84,5 +96,9 @@ def mail_notification(body):
             smtpObj.sendmail(SMTP_SENDER, SMTP_RECEIVERS, text)
             smtpObj.quit()
             print('Successfully sent email')
+        os.system("rm -f logs.txt")
+        print("Logs File Deleted.")
+        os.system("rm -f apistatus.xlsx")
+        print("API Status File Deleted.")
     except SMTPException as err:
         print('Error: unable to send email', err)
