@@ -44,7 +44,7 @@ def mail_notification(body):
             with open("logs.txt", "a") as f:
                 f.writelines(logs)
 
-            # os.system(f'docker restart {d["container_name"]}')
+            os.system(f'docker restart {d["container_name"]}')
             newData = {
                 "Container Name": d["container_name"],
                 "Service Name":  d["service_name"],
